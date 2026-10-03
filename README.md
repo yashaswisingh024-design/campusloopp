@@ -244,10 +244,3 @@ This project is developed for educational, academic, and innovation purposes.
 
 
 
-
-
-
-[Continue working on v0 →](https://v0.app/chat/projects/prj_oMvFXd0n7SK2Z7Xp6s9kK7yGoKUL)
-
-
-
