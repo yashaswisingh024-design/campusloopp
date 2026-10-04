@@ -2,8 +2,9 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { Repeat, Menu, X, ShieldCheck } from "lucide-react"
+import { Repeat, Menu, X, ShieldCheck, LogOut, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/context/auth-context"
 
 const navLinks = [
   { href: "/marketplace", label: "Marketplace" },
@@ -14,6 +15,7 @@ const navLinks = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
+  const { user, logout } = useAuth()
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-lg">
@@ -37,14 +39,38 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
-          <div className="flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            IIT Delhi
-          </div>
-          <Button asChild size="sm">
-            <Link href="/marketplace">Get started</Link>
-          </Button>
+        {/* Real Auth State Area */}
+        <div className="hidden items-center gap-3 md:flex">
+          {user ? (
+            <>
+              <div className="flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                {user.college ? user.college.split('(')[0].trim() : 'Verified College'}
+              </div>
+              <div className="flex items-center gap-2 font-medium text-sm text-foreground px-2">
+                <User size={16} className="text-primary" />
+                <span>{user.name || 'Student'}</span>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => logout()}
+                className="gap-1.5 text-xs text-muted-foreground hover:text-destructive"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/auth?mode=login">Sign In</Link>
+              </Button>
+              <Button asChild size="sm">
+                <Link href="/auth?mode=signup">Get started</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         <button
@@ -69,11 +95,41 @@ export function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            <Button asChild size="sm" className="mt-2">
-              <Link href="/marketplace" onClick={() => setOpen(false)}>
-                Get started
-              </Link>
-            </Button>
+            <div className="mt-2 pt-2 border-t border-border/60 flex flex-col gap-2">
+              {user ? (
+                <>
+                  <div className="flex items-center justify-between text-sm px-3 py-1 font-medium">
+                    <span>{user.name}</span>
+                    <span className="text-xs text-muted-foreground">{user.college}</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setOpen(false)
+                      logout()
+                    }}
+                    className="w-full justify-center gap-1.5"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button asChild variant="outline" size="sm" className="w-full justify-center">
+                    <Link href="/auth?mode=login" onClick={() => setOpen(false)}>
+                      Sign In
+                    </Link>
+                  </Button>
+                  <Button asChild size="sm" className="w-full justify-center">
+                    <Link href="/auth?mode=signup" onClick={() => setOpen(false)}>
+                      Get started
+                    </Link>
+                  </Button>
+                </>
+              )}
+            </div>
           </nav>
         </div>
       )}
