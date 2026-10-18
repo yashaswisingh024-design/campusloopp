@@ -184,16 +184,16 @@ export default async function ListingDetailPage({
 
             {/* Actions */}
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Button
-                size="lg"
-                className="flex-1 gap-2"
-                onClick={() => {
-                  window.location.href = "/messages"
-                }}
-              >
-                <MessageSquare className="h-4 w-4" />
-                Message seller
-              </Button>
+             <Button
+  size="lg"
+  className="flex-1 gap-2"
+  onClick={() => {
+    window.location.href = "/messages"
+  }}
+>
+  <MessageSquare className="h-4 w-4" />
+  Message seller
+</Button>
 
               <Button
                 size="lg"
