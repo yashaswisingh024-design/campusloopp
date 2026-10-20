@@ -1,3 +1,4 @@
+
 import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
@@ -9,10 +10,17 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { getListing, formatPrice } from "@/lib/data"
 
-export default async function ListingDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ListingDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
   const { id } = await params
   const listing = getListing(id)
-  if (!listing) notFound()
+
+  if (!listing) {
+    notFound()
+  }
 
   const discount = listing.originalPrice
     ? Math.round((1 - listing.price / listing.originalPrice) * 100)
@@ -21,6 +29,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
+
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
         <Link
           href="/marketplace"
@@ -31,6 +40,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
         </Link>
 
         <div className="mt-6 grid gap-8 lg:grid-cols-2">
+          {/* Listing image */}
           <div className="relative aspect-square overflow-hidden rounded-3xl border border-border bg-muted">
             <Image
               src={listing.image || "/placeholder.svg"}
@@ -40,6 +50,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               sizes="(max-width: 1024px) 100vw, 600px"
               className="object-cover"
             />
+
             {discount > 0 && (
               <div className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1.5 text-sm font-bold text-primary-foreground">
                 -{discount}%
@@ -47,13 +58,16 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
             )}
           </div>
 
+          {/* Listing details */}
           <div className="flex flex-col gap-5">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="secondary">{listing.category}</Badge>
               <Badge variant="secondary">{listing.condition}</Badge>
+
               {listing.swappable && (
                 <Badge className="gap-1 bg-accent text-accent-foreground">
-                  <Repeat className="h-3 w-3" /> Open to swap
+                  <Repeat className="h-3 w-3" />
+                  Open to swap
                 </Badge>
               )}
             </div>
@@ -63,9 +77,14 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
             </h1>
 
             <div className="flex items-end gap-3">
-              <span className="font-display text-3xl font-bold text-foreground">{formatPrice(listing.price)}</span>
+              <span className="font-display text-3xl font-bold text-foreground">
+                {formatPrice(listing.price)}
+              </span>
+
               {listing.originalPrice && (
-                <span className="pb-1 text-muted-foreground line-through">{formatPrice(listing.originalPrice)}</span>
+                <span className="pb-1 text-muted-foreground line-through">
+                  {formatPrice(listing.originalPrice)}
+                </span>
               )}
             </div>
 
@@ -73,12 +92,18 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
               Example item only — seller and availability details are illustrative.
             </div>
 
-            <p className="leading-relaxed text-muted-foreground">{listing.description}</p>
+            <p className="leading-relaxed text-muted-foreground">
+              {listing.description}
+            </p>
 
             <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm">
               <MapPin className="h-4 w-4 text-primary" />
-              <span className="text-muted-foreground">Preferred meetup:</span>
-              <span className="font-medium text-foreground">{listing.meetup}</span>
+              <span className="text-muted-foreground">
+                Preferred meetup:
+              </span>
+              <span className="font-medium text-foreground">
+                {listing.meetup}
+              </span>
             </div>
 
             <Separator />
@@ -89,6 +114,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/15 font-semibold text-primary">
                   {listing.seller.initials}
                 </span>
+
                 <div>
                   <p className="flex items-center gap-1.5 font-medium">
                     Example seller
@@ -96,11 +122,13 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
                   <p className="text-xs text-muted-foreground">Sample profile</p>
                 </div>
               </div>
+
               <div className="text-right text-sm">
                 <p className="text-xs text-muted-foreground">Preview</p>
               </div>
             </div>
 
+            {/* Actions */}
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button size="lg" className="flex-1 gap-2" onClick={() => { window.location.href = "/messages" }}>
                 <Link href="/messages">
@@ -120,6 +148,7 @@ export default async function ListingDetailPage({ params }: { params: Promise<{ 
           </div>
         </div>
       </main>
+
       <SiteFooter />
     </div>
   )
