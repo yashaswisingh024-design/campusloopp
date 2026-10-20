@@ -6,9 +6,7 @@ import {
   getCurrentNetlifyUser,
   logoutNetlifyUser,
   loginWithCollegeEmail as netlifyLoginCollege,
-  loginWithApaar as netlifyLoginApaar,
   signUpWithCollegeEmail as netlifySignUpCollege,
-  signUpWithApaar as netlifySignUpApaar,
   loginWithGoogle as netlifyLoginGoogle,
   handleOAuthCallback,
   normalizeUser,
@@ -19,9 +17,7 @@ interface AuthContextType {
   user: UserProfile | null;
   isLoading: boolean;
   loginWithCollege: (email: string, password: string) => Promise<UserProfile | null>;
-  loginWithApaar: (apaarId: string, password: string) => Promise<UserProfile | null>;
   signUpWithCollege: (data: { name: string; email: string; college: string; password: string; referralCode?: string }) => Promise<UserProfile | null>;
-  signUpWithApaar: (data: { name: string; apaarId: string; college: string; password: string; referralCode?: string }) => Promise<UserProfile | null>;
   loginWithGoogle: () => void;
   logout: () => Promise<void>;
 }
@@ -41,7 +37,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const oauthUser = await handleOAuthCallback();
           if (oauthUser && mounted) {
             setUser(oauthUser);
-            localStorage.setItem('campusloop_user', JSON.stringify(oauthUser));
             setIsLoading(false);
             window.history.replaceState(null, '', window.location.pathname);
             return;
@@ -51,16 +46,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const currentNetlifyUser = await getCurrentNetlifyUser();
         if (currentNetlifyUser && mounted) {
           setUser(currentNetlifyUser);
-          localStorage.setItem('campusloop_user', JSON.stringify(currentNetlifyUser));
           setIsLoading(false);
           return;
-        }
-
-        if (typeof window !== 'undefined') {
-          const savedUser = localStorage.getItem('campusloop_user');
-          if (savedUser && mounted) {
-            setUser(JSON.parse(savedUser));
-          }
         }
       } catch (err) {
         console.error('Auth initialization error:', err);
@@ -78,14 +65,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (netlifyUser) {
             const norm = normalizeUser(netlifyUser);
             setUser(norm);
-            if (typeof window !== 'undefined') {
-              localStorage.setItem('campusloop_user', JSON.stringify(norm));
-            }
           } else {
             setUser(null);
-            if (typeof window !== 'undefined') {
-              localStorage.removeItem('campusloop_user');
-            }
           }
         }
       });
@@ -102,36 +83,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loginWithCollege = async (email: string, password: string) => {
     const data = await netlifyLoginCollege(email, password);
     setUser(data);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('campusloop_user', JSON.stringify(data));
-    }
-    return data;
-  };
-
-  const loginWithApaar = async (apaarId: string, password: string) => {
-    const data = await netlifyLoginApaar(apaarId, password);
-    setUser(data);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('campusloop_user', JSON.stringify(data));
-    }
     return data;
   };
 
   const signUpWithCollege = async (formData: { name: string; email: string; college: string; password: string; referralCode?: string }) => {
     const data = await netlifySignUpCollege(formData);
     setUser(data);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('campusloop_user', JSON.stringify(data));
-    }
-    return data;
-  };
-
-  const signUpWithApaar = async (formData: { name: string; apaarId: string; college: string; password: string; referralCode?: string }) => {
-    const data = await netlifySignUpApaar(formData);
-    setUser(data);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('campusloop_user', JSON.stringify(data));
-    }
     return data;
   };
 
@@ -141,9 +98,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     setUser(null);
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('campusloop_user');
-    }
     await logoutNetlifyUser();
   };
 
@@ -153,9 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         isLoading,
         loginWithCollege,
-        loginWithApaar,
         signUpWithCollege,
-        signUpWithApaar,
         loginWithGoogle,
         logout
       }}

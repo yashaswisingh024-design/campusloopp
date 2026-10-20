@@ -1,18 +1,15 @@
-const stats = [
-  { value: "12,400+", label: "Verified students" },
-  { value: "38,000+", label: "Items traded" },
-  { value: "₹4.1 Cr", label: "Saved by students" },
-  { value: "4.9/5", label: "Avg. seller rating" },
-]
-
 export function StatsBar() {
   return (
     <section className="border-y border-border/60 bg-card">
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-10 md:grid-cols-4">
-        {stats.map((stat) => (
-          <div key={stat.label} className="text-center">
-            <p className="font-display text-2xl font-bold text-foreground md:text-3xl">{stat.value}</p>
-            <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
+      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 sm:grid-cols-3">
+        {[
+          ["Buy nearby", "Find useful things from your campus community."],
+          ["Sell simply", "Give good items another semester of use."],
+          ["Meet in public", "Arrange an exchange at a familiar campus spot."],
+        ].map(([title, description]) => (
+          <div key={title} className="text-center sm:text-left">
+            <p className="font-display text-lg font-semibold text-foreground">{title}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{description}</p>
           </div>
         ))}
       </div>

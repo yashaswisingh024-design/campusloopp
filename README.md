@@ -1,246 +1,53 @@
+# CampusLoop
 
-# 🎓 CampusLoopp – AI-Powered Student Marketplace
+CampusLoop is a Next.js student marketplace prototype. The current UI includes a landing page, sample marketplace catalogue, listing details, college email signup/sign-in, and a student profile view.
 
-> **Buy. Sell. Swap. Repeat.**
+## Current integration status
 
-CampusLoop is an AI-powered student marketplace built exclusively for verified college communities. It enables students to safely buy, sell, and exchange second-hand products within their campus using **Google Gemini AI** for smarter listings, pricing, search, and scam detection.
+- **Authentication:** Netlify Identity client integration is present. It requires Identity to be enabled for the Netlify site. Google sign-in additionally requires Google OAuth credentials in Netlify Identity settings. Domain matching is a client-side signup check and is not official student verification.
+- **Listings:** Current catalogue entries are illustrative examples in `lib/data.ts`. There is no listings database, server-side ownership authorization, or image storage connected. Publishing is intentionally unavailable.
+- **Messages:** No conversation or message backend is configured; users cannot send messages.
+- **Referrals:** Referral attribution, rewards, and ambassador activity are not implemented. No credits or conversions are recorded.
+- **APAAR:** Disabled. A 12-digit format check would not verify identity; connect an authorized provider before enabling it.
+- **Admin:** The route is an informational placeholder. No admin data or controls are exposed.
 
-🌐 **Live Demo:** https://campusloopp.netlify.app/
+Do not present preview listings or the example image files as real student posts.
 
----
+## Local development
 
-## 🚀 Features
-
-### 🎓 Verified Student Marketplace
-- College email verification (`.edu`, `.ac.in`, etc.)
-- Trusted campus-only community
-- Secure on-campus meetups
-- Safe peer-to-peer transactions
-
-### 🤖 AI Powered by Google Gemini
-- ✨ AI Listing Generator
-- 💰 Smart Price Recommendations
-- 🔍 Natural Language Search
-- 🛡️ AI Scam Detection
-- 💬 AI Seller Chat Simulator
-
-### 💬 Real-Time Messaging
-- Secure buyer-seller chat
-- Price negotiation
-- Meetup scheduling
-- Image & document sharing
-
-### 🏆 Student Rewards
-- Mission Center
-- Referral Program
-- Leaderboards
-- Ambassador Badges
-
-### 🛠️ Admin Dashboard
-- User management
-- Listing moderation
-- Scam review
-- Reports & analytics
-- Marketplace monitoring
-
----
-
-## 🧠 AI Capabilities
-
-| Feature | Description |
-|---------|-------------|
-| AI Listing Generator | Creates professional product titles & descriptions |
-| Smart Pricing | Suggests optimal selling prices |
-| Natural Language Search | Converts human queries into marketplace filters |
-| Scam Detection | Flags suspicious listings before publishing |
-| AI Seller Chat | Simulates realistic seller conversations |
-
----
-
-## 🏗️ Tech Stack
-
-| Category | Technologies |
-|-----------|--------------|
-| Frontend | React 19, TypeScript, Tailwind CSS |
-| Backend | Node.js, Express.js |
-| AI | Google Gemini AI |
-| Build Tool | Vite |
-| Database | JSON Storage (CRUD) |
-| Icons | Lucide React |
-| Animation | Motion |
-
----
-
-## 📂 Project Structure
-
-```
-CampusLoop/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── hooks/
-│   ├── lib/
-│   └── App.tsx
-│
-├── server/
-│   ├── db.ts
-│   ├── gemini.ts
-│   └── server.ts
-│
-├── public/
-├── package.json
-├── vite.config.ts
-└── README.md
-```
-
----
-
-## ⚙️ Installation
-
-### Clone Repository
+Requirements: Node.js 20 or newer and npm.
 
 ```bash
-git clone https://github.com/your-username/campusloop.git
-
-cd campusloop
-```
-
-### Install Dependencies
-
-```bash
-npm install
-```
-
-### Configure Environment Variables
-
-Create a `.env` file:
-
-```env
-GEMINI_API_KEY=YOUR_API_KEY
-APP_URL=http://localhost:3000
-```
-
-### Start Development Server
-
-```bash
+npm ci
 npm run dev
 ```
 
-Open:
+The app runs at `http://localhost:3000`. Without a configured Netlify Identity site, auth actions will fail with provider errors; the preview marketplace remains browseable.
 
-```
-http://localhost:3000
-```
+## Environment and provider setup
 
----
+Copy `.env.example` to `.env.local` and set:
 
-## 🎯 User Journey
+- `NEXT_PUBLIC_COLLEGE_EMAIL_DOMAINS`: comma-separated college email domains allowed by the signup UI, such as `apsit.edu.in`. This is a convenience check only, not verification. Keep it aligned with the colleges enabled in `lib/colleges.ts`.
 
-1. Verify college email
-2. Complete profile
-3. List an item
-4. AI generates description
-5. AI recommends price
-6. Scam detection checks listing
-7. Listing goes live
-8. Buyer discovers item
-9. Chat & negotiate
-10. Meet safely on campus
-11. Complete transaction
+In the Netlify dashboard, enable Identity, choose the registration confirmation policy, configure allowed external providers, and add the production callback URL for Google OAuth. Set the same domain list in Netlify's build environment for production. Never place OAuth client secrets or service credentials in `NEXT_PUBLIC_*` variables.
 
----
+Before enabling publishing, add a persistent listing store and image storage, then enforce authenticated ownership for create/edit/delete on the server. Before enabling messaging or referrals, connect persistent data models and server-side authorization/attribution. Do not use browser local storage as the source of truth for users, listings, or transactions.
 
-## 🔒 Security
+## Routes
 
-- ✅ Verified student accounts
-- ✅ College-only access
-- ✅ AI scam detection
-- ✅ Admin moderation
-- ✅ Secure messaging
-- ✅ Safe campus meetup locations
+- `/` — product overview and preview catalogue
+- `/marketplace` and `/marketplace/[id]` — searchable example catalogue and item details
+- `/sell` — listing form design; publishing is unavailable until backend setup
+- `/auth` — Netlify Identity college email and Google flow
+- `/profile` — current provider-backed profile details
+- `/messages`, `/ambassador`, `/admin` — clear integration status pages
 
----
-
-## 🌟 Why CampusLoop?
-
-- 🎓 Exclusive student community
-- 🤖 Google Gemini AI integration
-- 🔍 Intelligent product discovery
-- 💰 Smart pricing recommendations
-- 🛡️ AI-powered scam prevention
-- 💬 Secure real-time messaging
-- 📍 Safe campus meetups
-- 🏆 Leaderboards & rewards
-- ⚡ Fast, modern React architecture
-
----
-
-## 🚀 Future Roadmap
-
-- 💳 Escrow payments
-- 📡 WebSocket real-time updates
-- 🖼️ Multi-image product listings
-- 🗺️ Google Maps campus meetups
-- 📱 Android & iOS apps
-- 📊 AI marketplace analytics
-- 🌍 Multi-university support
-
----
-
-## 📸 Screenshots
-
-Add screenshots of:
-
-- Landing Page
-- Marketplace
-- AI Listing Generator
-- Messaging
-- Admin Dashboard
-- Student Leaderboard
-
----
-
-## 👨‍💻 Built With
-
-- React 19
-- TypeScript
-- Tailwind CSS
-- Node.js
-- Express.js
-- Google Gemini AI
-- Vite
-- Lucide React
-
----
-
-## 🤝 Contributing
-
-Contributions, ideas, and feature requests are welcome.
+## Build and deployment
 
 ```bash
-Fork the repository
-
-Create a feature branch
-
-Commit your changes
-
-Open a Pull Request
+npm run lint
+npm run build
 ```
 
----
-
-## 📄 License
-
-This project is developed for educational, academic, and innovation purposes.
-
----
-
-# 🎓 CampusLoop
-
-### **Making Campus Commerce Smarter with AI.**
-
-
-
-
-
-
+Netlify uses `@netlify/plugin-nextjs` via `netlify.toml`; deploys should run from the connected Git repository and use the Identity configuration above. The build output is framework-managed by the plugin. Confirm Identity settings and environment variables in Netlify before production use.

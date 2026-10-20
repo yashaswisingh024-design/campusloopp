@@ -3,10 +3,7 @@ const stack = [
   { name: "TypeScript", cat: "Language" },
   { name: "Tailwind CSS", cat: "Styling" },
   { name: "Next.js", cat: "Framework" },
-  { name: "Node.js", cat: "Backend" },
-  { name: "Neon Postgres", cat: "Database" },
-  { name: "Google Gemini", cat: "AI" },
-  { name: "Vercel AI SDK", cat: "AI" },
+  { name: "Netlify Identity", cat: "Auth integration" },
   { name: "Lucide Icons", cat: "Icons" },
   { name: "shadcn/ui", cat: "Components" },
 ]
@@ -21,7 +18,7 @@ export function TechStack() {
         <div className="mx-auto mb-8 max-w-2xl text-center">
           <p className="brand-gradient-text mb-2 text-sm font-semibold uppercase tracking-wider">Built with</p>
           <h2 className="text-balance font-display text-2xl font-bold tracking-tight sm:text-3xl">
-            A modern, production-grade stack
+            The tools behind this prototype
           </h2>
         </div>
         <div className="flex flex-wrap justify-center gap-3">

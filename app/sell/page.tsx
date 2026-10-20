@@ -10,7 +10,7 @@ export default function SellPage() {
         <div className="flex flex-col gap-2">
           <h1 className="font-display text-3xl font-bold tracking-tight">List an item</h1>
           <p className="text-muted-foreground">
-            Add your item in seconds — Gemini writes the description, suggests a price, and checks for scams.
+            Prepare an item listing for your campus community.
           </p>
         </div>
         <div className="mt-8">

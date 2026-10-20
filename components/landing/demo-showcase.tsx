@@ -27,9 +27,9 @@ export function DemoShowcase() {
               <Wand2 className="h-5 w-5" />
             </span>
             <div>
-              <h3 className="font-display text-lg font-semibold">Smart, AI-optimized listings</h3>
+              <h3 className="font-display text-lg font-semibold">Marketplace concept</h3>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                Browse verified items with AI-written descriptions, fair-price badges, and risk scores at a glance.
+                Illustrative art showing one possible way to browse sample campus items.
               </p>
             </div>
           </div>
@@ -39,7 +39,7 @@ export function DemoShowcase() {
           <div className="relative aspect-[16/10] border-b border-border">
             <Image
               src="/images/demo-chat.png"
-              alt="CampusLoop real-time student chat with AI suggestions"
+              alt="Illustrative mockup of a student conversation screen"
               fill
               sizes="(max-width: 1024px) 100vw, 600px"
               className="object-cover"
@@ -50,9 +50,9 @@ export function DemoShowcase() {
               <MessagesSquare className="h-5 w-5" />
             </span>
             <div>
-              <h3 className="font-display text-lg font-semibold">Real-time chat, backed by AI</h3>
+              <h3 className="font-display text-lg font-semibold">Messaging concept</h3>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                Negotiate safely with an AI seller simulator to practice, plus scam alerts that flag risky messages.
+                This artwork is illustrative. The app does not currently send or receive messages.
               </p>
             </div>
           </div>
@@ -61,7 +61,7 @@ export function DemoShowcase() {
 
       <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
         <ShieldAlert className="h-4 w-4 text-accent" />
-        Every conversation and listing is protected by Gemini scam detection.
+        Messaging and listing services are not connected in this prototype.
       </div>
     </section>
   )

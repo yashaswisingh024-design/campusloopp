@@ -17,9 +17,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'CampusLoop — AI-Powered Student Marketplace',
+  title: 'CampusLoop — Your campus, in the loop',
   description:
-    'Buy, sell, and swap second-hand items safely within your verified college community. AI-powered listings, smart pricing, scam detection, and safe campus meetups.',
+    'A student marketplace concept for buying and passing on useful things around campus.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -41,10 +41,9 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
+  colorScheme: 'dark',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0b0f0d' },
+    { color: '#0b1020' },
   ],
 }
 
@@ -56,7 +55,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} bg-background`}
+      className={`${spaceGrotesk.variable} ${inter.variable} dark bg-background`}
     >
       <body className="font-sans antialiased">
         <AuthProvider>

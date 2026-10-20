@@ -4,7 +4,7 @@ export default function AdminPage() {
   return (
     <ComingSoon
       title="Admin Dashboard"
-      description="User management, listing moderation, AI scam review, and marketplace analytics are coming in a later step."
+      description="Admin tools are not configured in this repository. User management, moderation, and analytics are unavailable."
     />
   )
 }

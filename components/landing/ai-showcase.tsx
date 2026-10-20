@@ -1,25 +1,25 @@
-import { PenLine, TrendingUp, Search, ShieldAlert } from "lucide-react"
+import { BookOpen, Repeat2, MapPin, UsersRound } from "lucide-react"
 
-const aiFeatures = [
+const features = [
   {
-    icon: PenLine,
-    title: "AI Listing Generator",
-    desc: "Enter a product name and condition — Gemini writes a professional title, description, and selling points instantly.",
+    icon: BookOpen,
+    title: "Made for student life",
+    desc: "Textbooks, desk lamps, calculators, and all the things that make a semester easier.",
   },
   {
-    icon: TrendingUp,
-    title: "Smart Price Recommendation",
-    desc: "Gemini analyzes category, age, and market condition to suggest a fair price that actually sells.",
+    icon: Repeat2,
+    title: "Keep good things moving",
+    desc: "Pass along items you no longer need and help another student get more use out of them.",
   },
   {
-    icon: Search,
-    title: "Natural Language Search",
-    desc: "Search like you talk — “cheap engineering drawing kit near hostel” becomes structured filters automatically.",
+    icon: MapPin,
+    title: "Stay close to campus",
+    desc: "Browse with simple search and category filters, then arrange a public campus meetup.",
   },
   {
-    icon: ShieldAlert,
-    title: "AI Scam Detection",
-    desc: "Every listing is scanned for fraud signals before going live, with risk levels shown to buyers and admins.",
+    icon: UsersRound,
+    title: "A student-first idea",
+    desc: "CampusLoop is designed around the people who know campus life best: students.",
   },
 ]
 
@@ -27,17 +27,17 @@ export function AiShowcase() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 md:py-24">
       <div className="mx-auto max-w-2xl text-center">
-        <p className="font-medium text-primary">Intelligence built in</p>
+        <p className="font-medium text-primary">The CampusLoop idea</p>
         <h2 className="mt-2 text-balance font-display text-3xl font-bold tracking-tight md:text-4xl">
-          Gemini AI does the hard work for you
+          Campus life has a secondhand side
         </h2>
         <p className="mt-3 text-pretty text-muted-foreground">
-          From writing your listing to catching scams, AI makes campus trading faster, smarter, and safer.
+          Useful things move between students every semester. CampusLoop gives those exchanges a place to start.
         </p>
       </div>
 
       <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {aiFeatures.map((feature) => (
+        {features.map((feature) => (
           <div
             key={feature.title}
             className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 transition-colors hover:border-primary/40"

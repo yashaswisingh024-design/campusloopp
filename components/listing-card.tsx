@@ -1,10 +1,10 @@
 import Link from "next/link"
 import Image from "next/image"
-import { MapPin, ShieldCheck, Repeat, Star } from "lucide-react"
+import { MapPin, Repeat } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { type Listing, formatPrice } from "@/lib/data"
 
-export function ListingCard({ listing }: { listing: Listing }) {
+export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: number }) {
   const discount = listing.originalPrice
     ? Math.round((1 - listing.price / listing.originalPrice) * 100)
     : 0
@@ -12,7 +12,8 @@ export function ListingCard({ listing }: { listing: Listing }) {
   return (
     <Link
       href={`/marketplace/${listing.id}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+      className="loop-card group flex flex-col overflow-hidden rounded-2xl border border-border bg-card"
+      style={{ animationDelay: `${Math.min(index, 7) * 75}ms` }}
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         <Image
@@ -68,13 +69,9 @@ export function ListingCard({ listing }: { listing: Listing }) {
             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/15 text-[10px] font-semibold text-primary">
               {listing.seller.initials}
             </span>
-            {listing.seller.name.split(" ")[0]}
-            {listing.seller.verified && <ShieldCheck className="h-3.5 w-3.5 text-primary" />}
+            Example seller
           </span>
-          <span className="flex items-center gap-1 text-muted-foreground">
-            <Star className="h-3.5 w-3.5 fill-accent text-accent" />
-            {listing.seller.rating}
-          </span>
+          <span className="text-muted-foreground">Sample</span>
         </div>
       </div>
     </Link>
