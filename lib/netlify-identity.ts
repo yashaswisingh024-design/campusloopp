@@ -1,6 +1,7 @@
 import {
   AuthError,
   MissingIdentityError,
+  getSettings as netlifyGetSettings,
   signup as netlifySignup,
   login as netlifyLogin,
   logout as netlifyLogout,
@@ -65,13 +66,14 @@ export function validateCollegeEmail(email: string): boolean {
 export function normalizeUser(netlifyUser: any): UserProfile | null {
   if (!netlifyUser) return null;
   const metadata = netlifyUser.user_metadata || {};
+  const provider = netlifyUser.app_metadata?.provider;
   return {
     id: netlifyUser.id,
     userId: netlifyUser.id,
     email: netlifyUser.email || '',
     name: metadata.full_name || netlifyUser.email?.split('@')[0] || 'Student',
     role: metadata.role || 'STUDENT',
-    accountType: metadata.account_type || 'college_email',
+    accountType: metadata.account_type || (provider === 'google' ? 'google' : 'college_email'),
     college: metadata.college || '',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + encodeURIComponent(metadata.full_name || netlifyUser.email || 'student')
   };
@@ -139,7 +141,7 @@ export async function loginWithCollegeEmail(email: string, password: string): Pr
     if (setupMessage) throw new Error(setupMessage);
     if (err.message && err.message.includes('configured college domain')) throw err;
     if (err instanceof AuthError && err.status && err.status < 500) {
-      throw new Error('Incorrect email or password.');
+      throw new Error('Incorrect email or password. If you just registered, confirm your address from the email we sent first.');
     }
     if (err instanceof AuthError) {
       throw new Error('The account service could not be reached. Please try again later or contact the site owner.');
@@ -148,12 +150,17 @@ export async function loginWithCollegeEmail(email: string, password: string): Pr
   }
 }
 
-export function loginWithGoogle(): void {
+export async function loginWithGoogle(): Promise<void> {
   try {
+    const settings = await netlifyGetSettings();
+    if (!settings.providers.google) {
+      throw new Error('Google sign-in is not configured for this site yet. The site owner must add Google OAuth credentials in Netlify Identity settings.');
+    }
     netlifyOauthLogin('google');
   } catch (err: any) {
     const setupMessage = identityErrorMessage(err);
     if (setupMessage) throw new Error(setupMessage);
+    if (err.message?.includes('not configured for this site')) throw err;
     if (err.message && !err.message.includes('Redirecting')) {
       throw new Error('Google sign-in could not be completed. Please try again.');
     }
@@ -162,15 +169,17 @@ export function loginWithGoogle(): void {
 
 export async function handleOAuthCallback(): Promise<UserProfile | null> {
   try {
-    const rawUser = await netlifyHandleAuthCallback();
-    if (!rawUser) return null;
+    const callback = await netlifyHandleAuthCallback();
+    if (!callback?.user) return null;
 
-    const user = normalizeUser(rawUser);
+    const user = normalizeUser(callback.user);
 
     const configuredDomains = getCollegeEmailDomains();
-    if (configuredDomains.length > 0 && user?.email && !validateCollegeEmail(user.email)) {
+    const isEduInAddress = user?.email?.trim().toLowerCase().endsWith('.edu.in') ?? false;
+    const isConfiguredCollegeAddress = configuredDomains.length === 0 || (user?.email ? validateCollegeEmail(user.email) : false);
+    if (user?.email && !isEduInAddress && !isConfiguredCollegeAddress) {
       await netlifyLogout();
-      throw new Error('Google account must belong to an authorized college domain.');
+      throw new Error('Google sign-in is limited to authorized college addresses, including .edu.in domains.');
     }
 
     return user;
