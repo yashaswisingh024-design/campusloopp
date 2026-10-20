@@ -1,4 +1,6 @@
 import {
+  AuthError,
+  MissingIdentityError,
   signup as netlifySignup,
   login as netlifyLogin,
   logout as netlifyLogout,
@@ -7,6 +9,16 @@ import {
   handleAuthCallback as netlifyHandleAuthCallback,
   onAuthChange
 } from '@netlify/identity';
+
+function identityErrorMessage(error: unknown): string | null {
+  if (error instanceof MissingIdentityError) {
+    return 'CampusLoop accounts are not enabled on this site yet. The site owner needs to enable Netlify Identity in the Netlify project settings.';
+  }
+  if (error instanceof AuthError && (!error.status || error.status >= 500)) {
+    return 'The account service could not be reached. Please try again later or contact the site owner.';
+  }
+  return null;
+}
 
 export interface UserProfile {
   id: string;
@@ -61,7 +73,7 @@ export function normalizeUser(netlifyUser: any): UserProfile | null {
     role: metadata.role || 'STUDENT',
     accountType: metadata.account_type || 'college_email',
     college: metadata.college || '',
-    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(metadata.full_name || netlifyUser.email || 'student')}`
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + encodeURIComponent(metadata.full_name || netlifyUser.email || 'student')
   };
 }
 
@@ -97,6 +109,8 @@ export async function signUpWithCollegeEmail({
     }
     return normalizeUser(authenticatedUser);
   } catch (err: any) {
+    const setupMessage = identityErrorMessage(err);
+    if (setupMessage) throw new Error(setupMessage);
     const msg = err.message || '';
     if (msg.includes('already exists') || msg.includes('registered')) {
       throw new Error('An account already exists with these details. Try signing in.');
@@ -121,8 +135,14 @@ export async function loginWithCollegeEmail(email: string, password: string): Pr
 
     return user;
   } catch (err: any) {
-    if (err.message && err.message.includes('official college email')) {
-      throw err;
+    const setupMessage = identityErrorMessage(err);
+    if (setupMessage) throw new Error(setupMessage);
+    if (err.message && err.message.includes('configured college domain')) throw err;
+    if (err instanceof AuthError && err.status && err.status < 500) {
+      throw new Error('Incorrect email or password.');
+    }
+    if (err instanceof AuthError) {
+      throw new Error('The account service could not be reached. Please try again later or contact the site owner.');
     }
     throw new Error('Incorrect email or password.');
   }
@@ -132,6 +152,8 @@ export function loginWithGoogle(): void {
   try {
     netlifyOauthLogin('google');
   } catch (err: any) {
+    const setupMessage = identityErrorMessage(err);
+    if (setupMessage) throw new Error(setupMessage);
     if (err.message && !err.message.includes('Redirecting')) {
       throw new Error('Google sign-in could not be completed. Please try again.');
     }
