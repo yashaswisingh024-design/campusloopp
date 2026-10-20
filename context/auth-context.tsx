@@ -18,7 +18,7 @@ interface AuthContextType {
   isLoading: boolean;
   loginWithCollege: (email: string, password: string) => Promise<UserProfile | null>;
   signUpWithCollege: (data: { name: string; email: string; college: string; password: string; referralCode?: string }) => Promise<UserProfile | null>;
-  loginWithGoogle: () => void;
+  loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -92,8 +92,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return data;
   };
 
-  const loginWithGoogle = () => {
-    netlifyLoginGoogle();
+  const loginWithGoogle = async () => {
+    await netlifyLoginGoogle();
   };
 
   const logout = async () => {
