@@ -2,48 +2,13 @@
 import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
-import {
-  ArrowLeft,
-  MapPin,
-  ShieldCheck,
-  Star,
-  Repeat,
-  MessageSquare,
-  ShieldAlert,
-  CheckCircle2,
-} from "lucide-react"
-
+import { ArrowLeft, MapPin, Repeat, MessageSquare, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { getListing, formatPrice, type RiskLevel } from "@/lib/data"
-
-const riskConfig: Record<
-  RiskLevel,
-  {
-    label: string
-    className: string
-    icon: typeof ShieldCheck
-  }
-> = {
-  low: {
-    label: "Low risk — AI verified",
-    className: "border-primary/30 bg-primary/10 text-primary",
-    icon: ShieldCheck,
-  },
-  medium: {
-    label: "Medium risk — review details",
-    className: "border-accent/40 bg-accent/15 text-accent-foreground",
-    icon: ShieldAlert,
-  },
-  high: {
-    label: "High risk — proceed with caution",
-    className: "border-destructive/40 bg-destructive/10 text-destructive",
-    icon: ShieldAlert,
-  },
-}
+import { getListing, formatPrice } from "@/lib/data"
 
 export default async function ListingDetailPage({
   params,
@@ -60,8 +25,6 @@ export default async function ListingDetailPage({
   const discount = listing.originalPrice
     ? Math.round((1 - listing.price / listing.originalPrice) * 100)
     : 0
-
-  const risk = riskConfig[listing.riskLevel]
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -125,11 +88,8 @@ export default async function ListingDetailPage({
               )}
             </div>
 
-            <div
-              className={`flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium ${risk.className}`}
-            >
-              <risk.icon className="h-4 w-4" />
-              {risk.label}
+            <div className="rounded-xl border border-amber-400/25 bg-amber-300/5 px-4 py-3 text-sm text-muted-foreground">
+              Example item only — seller and availability details are illustrative.
             </div>
 
             <p className="leading-relaxed text-muted-foreground">
@@ -148,7 +108,7 @@ export default async function ListingDetailPage({
 
             <Separator />
 
-            {/* Seller information */}
+            {/* Example seller details are not connected to user accounts. */}
             <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-4">
               <div className="flex items-center gap-3">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/15 font-semibold text-primary">
@@ -157,59 +117,33 @@ export default async function ListingDetailPage({
 
                 <div>
                   <p className="flex items-center gap-1.5 font-medium">
-                    {listing.seller.name}
-
-                    {listing.seller.verified && (
-                      <ShieldCheck className="h-4 w-4 text-primary" />
-                    )}
+                    Example seller
                   </p>
-
-                  <p className="text-xs text-muted-foreground">
-                    {listing.seller.college}
-                  </p>
+                  <p className="text-xs text-muted-foreground">Sample profile</p>
                 </div>
               </div>
 
               <div className="text-right text-sm">
-                <p className="flex items-center gap-1 font-medium">
-                  <Star className="h-4 w-4 fill-accent text-accent" />
-                  {listing.seller.rating}
-                </p>
-
-                <p className="text-xs text-muted-foreground">
-                  {listing.seller.sales} sales
-                </p>
+                <p className="text-xs text-muted-foreground">Preview</p>
               </div>
             </div>
 
             {/* Actions */}
             <div className="flex flex-col gap-3 sm:flex-row">
-             <Button
-  size="lg"
-  className="flex-1 gap-2"
-  onClick={() => {
-    window.location.href = "/messages"
-  }}
->
-  <MessageSquare className="h-4 w-4" />
-  Message seller
-</Button>
-
-              <Button
-                size="lg"
-                variant="outline"
-                className="flex-1 gap-2"
-                disabled
-                title="Reservations are not available yet"
-              >
+              <Button size="lg" className="flex-1 gap-2" onClick={() => { window.location.href = "/messages" }}>
+                <Link href="/messages">
+                  <MessageSquare className="h-4 w-4" />
+                  Message seller
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="flex-1 gap-2" disabled>
                 <CheckCircle2 className="h-4 w-4" />
                 Reserve item
               </Button>
             </div>
 
             <p className="text-center text-xs text-muted-foreground">
-              Always meet at a safe campus location. Never pay before you
-              inspect the item.
+              Preview item only. Messaging and reservations are unavailable until marketplace services are connected.
             </p>
           </div>
         </div>

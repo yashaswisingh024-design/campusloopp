@@ -13,17 +13,17 @@ const columns = [
   {
     title: "Community",
     links: [
-      { label: "Ambassador program", href: "/ambassador" },
-      { label: "Leaderboard", href: "/ambassador" },
-      { label: "Messages", href: "/messages" },
+      { label: "How it works", href: "/#how-it-works" },
+      { label: "About the preview", href: "/#features" },
+      { label: "Messaging status", href: "/messages" },
     ],
   },
   {
     title: "Trust & Safety",
     links: [
-      { label: "How verification works", href: "/" },
-      { label: "Safe meetups", href: "/" },
-      { label: "Admin dashboard", href: "/admin" },
+      { label: "Meetup guidance", href: "/#how-it-works" },
+      { label: "Account access", href: "/auth?mode=signup" },
+      { label: "Admin availability", href: "/admin" },
     ],
   },
 ]
@@ -41,7 +41,7 @@ export function SiteFooter() {
               <span className="font-display text-lg font-bold tracking-tight">CampusLoop</span>
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              The AI-powered, trust-first marketplace built exclusively for verified college communities.
+              A marketplace concept for useful things finding their next home on campus.
             </p>
           </div>
           {columns.map((col) => (
@@ -63,7 +63,7 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-border/60 pt-6 text-sm text-muted-foreground sm:flex-row">
-          <p>© {new Date().getFullYear()} CampusLoop. Built for students, by students.</p>
+          <p>© {new Date().getFullYear()} CampusLoop. A campus marketplace concept.</p>
           <p>Buy. Sell. Swap. Repeat.</p>
         </div>
       </div>

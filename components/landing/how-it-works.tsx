@@ -1,12 +1,12 @@
-import { MailCheck, ListPlus, Sparkles, MessageCircle, MapPin, Handshake } from "lucide-react"
+import { MailCheck, Search, SlidersHorizontal, MessageCircle, MapPin, Handshake } from "lucide-react"
 
 const steps = [
-  { icon: MailCheck, title: "Verify", desc: "Sign up with your college email (.edu / .ac.in) to join your verified campus." },
-  { icon: ListPlus, title: "List", desc: "Add your item's name, condition, and photos in seconds." },
-  { icon: Sparkles, title: "AI Optimizes", desc: "Gemini writes the description, suggests a price, and scans for scams." },
-  { icon: MessageCircle, title: "Chat", desc: "Buyers reach out — negotiate and answer questions in real time." },
-  { icon: MapPin, title: "Meet", desc: "Pick a safe campus spot like the library or cafeteria to exchange." },
-  { icon: Handshake, title: "Trade", desc: "Complete the deal and earn leaderboard points and rewards." },
+  { icon: MailCheck, title: "Join", desc: "Create an account with your college email. Domain matching is not official student verification." },
+  { icon: Search, title: "Explore", desc: "Browse sample campus items using title search, categories, and price sorting." },
+  { icon: SlidersHorizontal, title: "Choose", desc: "Compare item details and decide what fits your needs." },
+  { icon: MessageCircle, title: "Connect", desc: "Messaging is planned, but isn't connected in this build yet." },
+  { icon: MapPin, title: "Meet", desc: "If arranging an exchange independently, choose a public place and inspect the item." },
+  { icon: Handshake, title: "Pass it on", desc: "Listing and transaction services are still being connected." },
 ]
 
 export function HowItWorks() {
@@ -19,7 +19,7 @@ export function HowItWorks() {
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <p className="brand-gradient-text mb-2 text-sm font-semibold uppercase tracking-wider">How it works</p>
           <h2 className="text-balance font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            From listing to handshake in six steps
+            A campus exchange starts with a good find
           </h2>
         </div>
 

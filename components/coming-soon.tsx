@@ -14,9 +14,7 @@ export function ComingSoon({ title, description }: { title: string; description:
         </span>
         <h1 className="font-display text-3xl font-bold tracking-tight">{title}</h1>
         <p className="max-w-md text-pretty text-muted-foreground">{description}</p>
-        <Button asChild className="mt-2">
-          <Link href="/marketplace">Explore the marketplace</Link>
-        </Button>
+        <Link href="/marketplace" className="mt-2 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Explore the marketplace</Link>
       </main>
       <SiteFooter />
     </div>

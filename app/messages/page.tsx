@@ -4,7 +4,7 @@ export default function MessagesPage() {
   return (
     <ComingSoon
       title="Secure Student Chat"
-      description="Real-time messaging to negotiate prices, ask questions, and plan safe campus meetups — plus an AI seller chat simulator — is coming next."
+      description="Messaging is not connected to a conversation database in this build, so messages cannot be sent or received yet."
     />
   )
 }
