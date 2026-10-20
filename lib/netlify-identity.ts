@@ -15,7 +15,7 @@ function identityErrorMessage(error: unknown): string | null {
   if (error instanceof MissingIdentityError) {
     return 'CampusLoop accounts are not enabled on this site yet. The site owner needs to enable Netlify Identity in the Netlify project settings.';
   }
-  if (error instanceof AuthError && (!error.status || error.status >= 500)) {
+  if (error instanceof AuthError && (!((error.status ?? (error as any).cause?.status)) || (error.status ?? (error as any).cause?.status) >= 500)) {
     return 'The account service could not be reached. Please try again later or contact the site owner.';
   }
   return null;
@@ -140,7 +140,7 @@ export async function loginWithCollegeEmail(email: string, password: string): Pr
     const setupMessage = identityErrorMessage(err);
     if (setupMessage) throw new Error(setupMessage);
     if (err.message && err.message.includes('configured college domain')) throw err;
-    if (err instanceof AuthError && err.status && err.status < 500) {
+    if (err instanceof AuthError && typeof (err.status ?? (err as any).cause?.status) === 'number' && (err.status ?? (err as any).cause?.status) >= 400 && (err.status ?? (err as any).cause?.status) < 500) {
       throw new Error('Incorrect email or password. If you just registered, confirm your address from the email we sent first.');
     }
     if (err instanceof AuthError) {
