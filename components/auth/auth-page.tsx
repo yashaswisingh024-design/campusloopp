@@ -36,10 +36,12 @@ export function AuthPageComponent() {
     }
   }
 
-  function googleSignIn() {
+  async function googleSignIn() {
     setError("");
-    try { loginWithGoogle(); }
+    setBusy(true);
+    try { await loginWithGoogle(); }
     catch (reason) { setError(reason instanceof Error ? reason.message : "Google sign-in could not be started."); }
+    finally { setBusy(false); }
   }
 
   return (
@@ -77,7 +79,7 @@ export function AuthPageComponent() {
         </form>
 
         <div className="my-5 flex items-center gap-3 text-xs text-slate-500"><span className="h-px flex-1 bg-white/10" />OR<span className="h-px flex-1 bg-white/10" /></div>
-        <button type="button" onClick={googleSignIn} className="h-12 w-full rounded-xl border border-white/10 bg-[#0b1020] font-medium transition hover:border-violet-400/40 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500">Continue with Google</button>
+        <button type="button" disabled={busy} onClick={googleSignIn} className="h-12 w-full rounded-xl border border-white/10 bg-[#0b1020] font-medium transition hover:border-violet-400/40 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 disabled:opacity-60">Continue with Google</button>
         <p className="mt-6 text-center text-sm text-slate-400">{mode === "signup" ? "Already have an account?" : "New to CampusLoop?"}{" "}<button type="button" onClick={() => { setError(""); setMode(mode === "signup" ? "login" : "signup"); }} className="font-semibold text-violet-300 underline-offset-4 hover:underline">{mode === "signup" ? "Sign in" : "Create account"}</button></p>
         <p className="mt-4 text-center text-xs leading-relaxed text-slate-500">APAAR sign-in is unavailable because this project has no authorized APAAR verification integration. Referral rewards are also not configured.</p>
       </section>
